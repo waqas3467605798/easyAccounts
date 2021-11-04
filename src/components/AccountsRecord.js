@@ -69,12 +69,11 @@ class MainBar extends Component{
         return(
           <div className='container' style={{border:'1px solid lemonchiffon', textAlign:'center', backgroundColor:'lemonchiffon'}}>
     
-          <Link to='/AccountsRecord/Content' style={{textDecoration:'none', marginRight:'22px', color:'red'}}> Create Account</Link>
-          <Link to='/AccountsRecord' style={{textDecoration:'none', marginRight:'22px', color:'red'}}> Data Entry </Link>
-          <Link to='/AccountsRecord/Vouchers' style={{textDecoration:'none', marginRight:'22px', color:'red'}} > Vouchers </Link>
-          <Link to='/AccountsRecord/Ledger' style={{textDecoration:'none', marginRight:'22px', color:'red'}} > Account Statement </Link>
-          <Link to='/AccountsRecord/Trial' style={{textDecoration:'none', marginRight:'22px', color:'red'}} > Summary </Link>
-          
+          <Link to='/AccountsRecord/Content' style={{textDecoration:'none', marginRight:'8px', color:'red', fontSize:'12px'}}>Add New </Link>
+          <Link to='/AccountsRecord' style={{textDecoration:'none', marginRight:'8px', color:'green', fontSize:'12px'}}> Data Entry </Link>
+          <Link to='/AccountsRecord/Ledger' style={{textDecoration:'none', marginRight:'8px', color:'red', fontSize:'12px'}} > Statement </Link>
+          <Link to='/AccountsRecord/Trial' style={{textDecoration:'none', marginRight:'8px', color:'green', fontSize:'12px'}} > Summary </Link>
+          <Link to='/AccountsRecord/Vouchers' style={{textDecoration:'none', marginRight:'8px', color:'red', fontSize:'12px'}} > Vouch. </Link>
           </div>
   
         );
@@ -241,7 +240,7 @@ render(){
   <h2 className='headings'>Create Account</h2>
   <input type='text'  value={this.state.partyName} name='partyName' onChange={this.changeHandler} placeholder='Account Title' />  <br/>
   <input type='text' value={this.state.address} name='address' onChange={this.changeHandler} placeholder='Address, Contact, ..etc' /> <br/>
-  <select className='browser-default' id='accountCategory'><option>Select Account Category</option><option>A. Debtors/Accounts Receivables</option> <option>B. Creditors/Accounts Payables</option> <option>C. Staff Accounts</option>  <option>D. Taxation Related </option> <option>E. Expenses Accounts</option> <option>F. Income/Revenues</option><option>G. Liabilities-Others</option><option>H. Assets</option><option>I. Capital</option><option>J. Personal Accounts of owner</option><option>K. Other Accounts</option></select>
+  <select className='browser-default' id='accountCategory'><option>Select Account Category</option><option>A. Debtors</option> <option>B. Creditors</option> <option>C. Staff</option>  <option>D. Taxation</option> <option>E. Expenses</option> <option>F. Revenues</option><option>G. Liabilities</option><option>H. Assets</option><option>I. Capital</option><option>J. Personal</option><option>K. Others</option></select>
   <button className="waves-effect waves-dark btn" onClick={this.saveParty}>Save</button>
   <br/><br/><br/><br/>
 
@@ -435,7 +434,7 @@ render(){
   <div  style={{textAlign:'center', marginBottom:'0px'}}><button className="waves-effect waves-dark btn" onClick={this.getData} style={{width:'80%'}}>Select Account</button> <br/>
   <div style={{width:'80%', margin:'auto'}}> <select className='browser-default' id='selected_save2'>  {this.state.partyObjects.map(  (item,i)=>{ return <option key={i} className='browser-default'>{item.partyName}</option>}  )       }   </select> </div> <br/>
   </div>
-  <input type='text' value={this.state.date} onChange={this.changeHandler} name='date'  maxLength='12' placeholder='Date Formate (dd-mm-yyyy)' /> <br/>
+  <input type='text' value={this.state.date} onChange={this.changeHandler} name='date'  maxLength='8' placeholder='Date Formate (dd.mm.yy)' /> <br/>
   <input type='text' value={this.state.narration} name='narration' onChange={this.changeHandler} placeholder='Remarks/Narration' /> <br/>
   <input type='number' value={this.state.debit} name='debit' onChange={this.changeHandler} placeholder='Amount +Debit / -Credit' /> <br/>
   <button className="waves-effect waves-dark btn" onClick={this.saveValue}>Save</button>
@@ -856,7 +855,7 @@ class Ledger extends Component{
     
     <div id='printldgr'>
   <div className='container'>Account Title: <b>{this.state.accountTitle} </b></div>
-  <table style={{maxWidth:'950px',margin:'auto'}}><thead><tr><th style={{textAlign:'center'}}>V#</th><th>Date</th><th>Remarks</th><th>Debit</th><th>Credit</th><th>Balance</th><td><a href='#down' style={{color:'blue'}} className="tiny material-icons">arrow_downward</a></td></tr></thead><tbody>{this.state.ledger.map(  (item,index)=>{return <tr key={index}><td style={{color:'blue', textAlign:'center'}}>{item.voucherNumber}</td><td>{item.date}</td><td style={{maxWidth:'135px',color:'blue'}}>{item.narration}</td><td>{item.debit >=0 ? item.debit : ''}</td><td style={{color:'blue'}}>{item.debit <0 ? item.debit : ''}</td><td className={this.state.ledgerBalance.slice(0,index+2).reduce( (total,num)=>{return total+num},0) >= 0 ? 'ldgrPostveAmt' : 'ldgrNegtveAmt'}><b>{this.state.ledgerBalance.slice(0,index+2).reduce( (total,num)=>{return total+num},0)}</b></td><td><a href='#' style={{fontSize:'16px', color:'red'}} className="material-icons" onClick={()=>this.deleteLedgerEntry(index)}>delete</a><a href='#' style={{fontSize:'16px', color:'green'}} className="small material-icons" onClick={()=> this.editEntry(index)}>edit</a></td></tr>}).slice(this.state.ledgerFor30Days)  }<tr><td></td><td></td><td><b>TOTAL</b></td><td><b>{this.state.debitTotal}</b></td><td><b>{this.state.creditTotal}</b></td><td style={{fontSize:'12px',color:'blue'}}><b>CL. BAL <i className="tiny material-icons">arrow_upward</i></b></td><td><a href='#up' style={{color:'blue'}} className="tiny material-icons">arrow_upward</a></td></tr></tbody></table>  {/*the Slice method is applied on map array to get only last 30 or 100 transactions as on your need*/ }
+  <table style={{maxWidth:'950px',margin:'auto'}}><thead><tr><th style={{textAlign:'center'}}>V#</th><th>Date</th><th>Remarks</th><th>Debit</th><th>Credit</th><th>Balance</th><td><a href='#down' style={{color:'blue'}} className="tiny material-icons">arrow_downward</a></td></tr></thead><tbody>{this.state.ledger.map(  (item,index)=>{return <tr key={index}><td style={{color:'blue', textAlign:'center'}}>{item.voucherNumber}</td><td>{item.date}</td><td style={{minWidth:'150px',color:'blue'}}>{item.narration}</td><td>{item.debit >=0 ? item.debit : ''}</td><td style={{color:'blue'}}>{item.debit <0 ? item.debit : ''}</td><td className={this.state.ledgerBalance.slice(0,index+2).reduce( (total,num)=>{return total+num},0) >= 0 ? 'ldgrPostveAmt' : 'ldgrNegtveAmt'}><b>{this.state.ledgerBalance.slice(0,index+2).reduce( (total,num)=>{return total+num},0)}</b></td><td><a href='#' style={{fontSize:'16px', color:'red'}} className="material-icons" onClick={()=>this.deleteLedgerEntry(index)}>delete</a><a href='#' style={{fontSize:'16px', color:'green'}} className="small material-icons" onClick={()=> this.editEntry(index)}>edit</a></td></tr>}).slice(this.state.ledgerFor30Days)  }<tr><td></td><td></td><td><b>TOTAL</b></td><td><b>{this.state.debitTotal}</b></td><td><b>{this.state.creditTotal}</b></td><td style={{fontSize:'12px',color:'blue'}}><b>CL. BAL <i className="tiny material-icons">arrow_upward</i></b></td><td><a href='#up' style={{color:'blue'}} className="tiny material-icons">arrow_upward</a></td></tr></tbody></table>  {/*the Slice method is applied on map array to get only last 30 or 100 transactions as on your need*/ }
     </div>
   {/* <button className="waves-effect waves-dark btn blue" onClick={()=>{this.printStm('printldgr')}}>Print Statement</button> */}
   
@@ -1072,7 +1071,7 @@ class Ledger extends Component{
           
           {/* <div className={this.state.status === true ? '' : 'display'}> */}
           
-          <table style={{maxWidth:'850px',margin:'auto'}}><thead><tr><th>Account Title</th><th>Debit</th><th>Credit</th><th>Account Type</th></tr></thead><tbody>{this.state.partyObjects.map(  (name,ind)=>{return <tr key={ind} className={name.sum.reduce( (total,num)=>{return total+num},0)===0 ? 'display' : ''}><td style={{maxWidth:'125px'}}><a href='#' onClick={()=>this.displayLedger(ind)} style={{color:'blue'}}>{name.partyName}</a></td><td className={name.sum.reduce( (total,num)=>{return total+num},0) > 0 ? 'trialPositiveAmt' : 'trialNegativeAmt'}><b>{name.sum.reduce( (total,num)=>{return total+num},0) > 0 ? name.sum.reduce( (total,num)=>{return total+num},0) : '-'}</b></td><td className={name.sum.reduce( (total,num)=>{return total+num},0) > 0 ? 'trialPositiveAmt' : 'trialNegativeAmt'}><b>{name.sum.reduce( (total,num)=>{return total+num},0) < 0 ? name.sum.reduce( (total,num)=>{return total+num},0) : '-'}</b></td><td style={{fontSize:'12px'}}>{name.accountCategory}</td></tr>})}</tbody></table>
+          <table style={{maxWidth:'850px',margin:'auto'}}><thead><tr><th>Account Title</th><th>Debit</th><th>Credit</th><th>Account Type</th></tr></thead><tbody>{this.state.partyObjects.map(  (name,ind)=>{return <tr key={ind} className={name.sum.reduce( (total,num)=>{return total+num},0)===0 ? 'display' : ''}><td style={{minWidth:'150px'}}><a href='#' onClick={()=>this.displayLedger(ind)} style={{color:'blue'}}>{name.partyName}</a></td><td className={name.sum.reduce( (total,num)=>{return total+num},0) > 0 ? 'trialPositiveAmt' : 'trialNegativeAmt'}><b>{name.sum.reduce( (total,num)=>{return total+num},0) > 0 ? name.sum.reduce( (total,num)=>{return total+num},0) : '-'}</b></td><td className={name.sum.reduce( (total,num)=>{return total+num},0) > 0 ? 'trialPositiveAmt' : 'trialNegativeAmt'}><b>{name.sum.reduce( (total,num)=>{return total+num},0) < 0 ? name.sum.reduce( (total,num)=>{return total+num},0) : '-'}</b></td><td style={{fontSize:'12px'}}>{name.accountCategory}</td></tr>})}</tbody></table>
           {/* <button className="waves-effect waves-dark btn blue" onClick={()=>{this.printStm('trialPrint')}}>Print this page</button> */}
           
           {/* </div> */}
@@ -1086,7 +1085,7 @@ class Ledger extends Component{
             <br/><br/>
           <p><b>ACCOUNT TITLE:</b> <span style={{color:'green'}}>{this.state.accountTitle} </span><br/>
           <span style={{color:'red',fontSize:'20px'}}>Last 50-Transactions</span></p>
-          <table style={{maxWidth:'700px',margin:'auto'}}><thead><tr><th>Vouch#</th><th>Date</th><th>Remarks</th><th>Debit</th><th>Credit</th><th>Balance</th></tr></thead><tbody>{this.state.ledger.map(  (item,index)=>{return <tr key={index}><td>{item.voucherNumber}</td><td>{item.date}</td><td style={{maxWidth:'150px'}}>{item.narration}</td><td className={item.debit >= 0 ? 'ldgrPostveAmt' : 'ldgrNegtveAmt'}>{item.debit >=0 ? item.debit : ''}</td><td className={item.debit >= 0 ? 'ldgrPostveAmt' : 'ldgrNegtveAmt'}>{item.debit <0 ? item.debit : ''}</td><td className={this.state.ledgerBalance.slice(0,index+2).reduce( (total,num)=>{return total+num},0) >= 0 ? 'ldgrPostveAmt' : 'ldgrNegtveAmt'}><b>{this.state.ledgerBalance.slice(0,index+2).reduce( (total,num)=>{return total+num},0)}</b></td></tr>}).slice(this.state.ledgerFor30Days)    }</tbody></table>  {/*the Slice method is applied on map array to get only last 30 transactions as on your need*/ }
+          <table style={{maxWidth:'700px',margin:'auto'}}><thead><tr><th>V#</th><th>Date</th><th>Remarks</th><th>Debit</th><th>Credit</th><th>Balance</th></tr></thead><tbody>{this.state.ledger.map(  (item,index)=>{return <tr key={index}><td>{item.voucherNumber}</td><td>{item.date}</td><td style={{minWidth:'160px'}}>{item.narration}</td><td className={item.debit >= 0 ? 'ldgrPostveAmt' : 'ldgrNegtveAmt'}>{item.debit >=0 ? item.debit : ''}</td><td className={item.debit >= 0 ? 'ldgrPostveAmt' : 'ldgrNegtveAmt'}>{item.debit <0 ? item.debit : ''}</td><td className={this.state.ledgerBalance.slice(0,index+2).reduce( (total,num)=>{return total+num},0) >= 0 ? 'ldgrPostveAmt' : 'ldgrNegtveAmt'}><b>{this.state.ledgerBalance.slice(0,index+2).reduce( (total,num)=>{return total+num},0)}</b></td></tr>}).slice(this.state.ledgerFor30Days)    }</tbody></table>  {/*the Slice method is applied on map array to get only last 30 transactions as on your need*/ }
           <button className="waves-effect waves-dark btn" onClick={this.backToTrial}>Back to summary</button>
           
           </div>
