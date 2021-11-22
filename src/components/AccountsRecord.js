@@ -1083,8 +1083,8 @@ class Ledger extends Component{
           {/* the following div is in case of ledger display */}
           <div className={this.state.ledgerDisplay === true ? '' : 'display'}>
             <br/><br/>
-          <p><b>ACCOUNT TITLE:</b> <span style={{color:'green'}}>{this.state.accountTitle} </span><br/>
-          <span style={{color:'red',fontSize:'20px'}}>Last 50-Transactions</span></p>
+          <p><b>ACCOUNT TITLE:</b> <span style={{color:'green', fontSize:'18px'}}>{this.state.accountTitle} </span><br/>
+          <span style={{color:'red',fontSize:'14px'}}>Last 50-Transactions</span></p>
           <table style={{maxWidth:'700px',margin:'auto'}}><thead><tr><th>V#</th><th>Date</th><th>Remarks</th><th>Debit</th><th>Credit</th><th>Balance</th></tr></thead><tbody>{this.state.ledger.map(  (item,index)=>{return <tr key={index}><td>{item.voucherNumber}</td><td>{item.date}</td><td style={{minWidth:'160px'}}>{item.narration}</td><td className={item.debit >= 0 ? 'ldgrPostveAmt' : 'ldgrNegtveAmt'}>{item.debit >=0 ? item.debit : ''}</td><td className={item.debit >= 0 ? 'ldgrPostveAmt' : 'ldgrNegtveAmt'}>{item.debit <0 ? item.debit : ''}</td><td className={this.state.ledgerBalance.slice(0,index+2).reduce( (total,num)=>{return total+num},0) >= 0 ? 'ldgrPostveAmt' : 'ldgrNegtveAmt'}><b>{this.state.ledgerBalance.slice(0,index+2).reduce( (total,num)=>{return total+num},0)}</b></td></tr>}).slice(this.state.ledgerFor30Days)    }</tbody></table>  {/*the Slice method is applied on map array to get only last 30 transactions as on your need*/ }
           <button className="waves-effect waves-dark btn" onClick={this.backToTrial}>Back to summary</button>
           
