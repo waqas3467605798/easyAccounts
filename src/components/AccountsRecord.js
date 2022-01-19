@@ -92,8 +92,11 @@ class MainBar extends Component{
         this.state = {
           address:'',
           partyName:'',
+          chartOfAccount:'',
           partyObjects:[],
+          chartOfAccountObject:[],
           getListStatus:false,
+          changeInState:false,
           // togleList:false,
           user:null,
           userEmail:null
@@ -115,6 +118,12 @@ class MainBar extends Component{
     dataPushPromise.then(()=>{
 
       var pushPromise = new Promise((res,rej)=>{
+
+        firebase.database().ref('chartOfAccount'+this.state.user).on('child_added' , (data)=> { 
+          this.state.chartOfAccountObject.push(data.val())
+        }  )
+
+
         var obj = [];
         firebase.database().ref('partyList'+this.state.user).on('child_added' , (data)=> { 
           obj.push(data.val())
@@ -124,6 +133,11 @@ class MainBar extends Component{
       })
       pushPromise.then((ob)=>{
         this.setState({partyObjects:ob})
+
+
+
+
+
       },(er)=>{
         alert(er)
       })
@@ -163,7 +177,7 @@ alert('This Account is Already opened')
 if(this.state.partyName === '' || this.state.address === ''){alert('you must fill all the fields')}else{
 
 
-if(document.getElementById('accountCategory').value === 'Select Account Category'){alert('You Must Select the Account Category')}else{
+if(document.getElementById('accountCategory').value === ''){alert('You Must Select the Account Category')}else{
 
 let partyObj = {};
 partyObj.partyName = this.state.partyName.replace(/  +/g, ' ').trim();    // replace() method is used to remove more than onve space in string & trim() method is used to remove space between first and last.
@@ -210,8 +224,16 @@ if(editAddress === null){
   editAddress = reqObj.address
 }
 
+
+var editCategory = prompt('Please edit Category of Account',reqObj.accountCategory)
+if(editCategory === null){
+  editCategory = reqObj.accountCategory
+}
+
+
 reqObj.partyName = editAccount.replace(/  +/g, ' ').trim();
 reqObj.address = editAddress.replace(/  +/g, ' ').trim()
+reqObj.accountCategory = editCategory.replace(/  +/g, ' ').trim()
 
 
 firebase.database().ref('partyList'+this.state.user).child(reqObj.key).set(reqObj)
@@ -223,6 +245,27 @@ this.state.partyObjects.splice(i,1,reqObj)
 }
 
 
+
+saveChartOfAccount = () =>{
+  var nameChartOfAccount = this.state.chartOfAccount;
+
+  var key = firebase.database().ref('chartOfAccount'+this.state.user).push().key
+
+firebase.database().ref('chartOfAccount'+this.state.user).child(key).set({nameChart: nameChartOfAccount, key: key})
+
+
+// this.state.chartOfAccountObject.push({key:'', nameChart:nameChartOfAccount})
+
+alert('Added Successfully')
+
+this.setState({chartOfAccount:''})
+}
+
+
+
+changeInState = ()=>{
+  this.setState({changeInState: ! this.state.changeInState})
+}
 
 
 render(){
@@ -240,16 +283,26 @@ render(){
   <h2 className='headings'>Create Account</h2>
   <input type='text'  value={this.state.partyName} name='partyName' onChange={this.changeHandler} placeholder='Account Title' />  <br/>
   <input type='text' value={this.state.address} name='address' onChange={this.changeHandler} placeholder='Address, Contact, ..etc' /> <br/>
-  <select className='browser-default' id='accountCategory'><option>Select Account Category</option><option>A. Debtors</option> <option>B. Creditors</option> <option>C. Staff</option>  <option>D. Taxation</option> <option>E. Expenses</option> <option>F. Revenues</option><option>G. Liabilities</option><option>H. Assets</option><option>I. Capital</option><option>J. Personal</option><option>K. Others</option></select>
+  <span style={{color:'red', fontSize:'10px'}} onClick={this.changeInState}>Select Account Category</span>
+  <div style={{width:'100%', margin:'auto'}}> <select className='browser-default' id='accountCategory'>  {this.state.chartOfAccountObject.sort((a, b) => (a.nameChart > b.nameChart) ? 1 : -1).map(  (item,i)=>{ return <option key={i} className='browser-default'>{item.nameChart}</option>}  )       }   </select> </div> <br/>
+  {/* <select className='browser-default' id='accountCategory'><option>Select Account Category</option><option>A. Debtors</option> <option>B. Creditors</option> <option>C. Staff</option>  <option>D. Taxation</option> <option>E. Expenses</option> <option>F. Revenues</option><option>G. Liabilities</option><option>H. Assets</option><option>I. Capital</option><option>J. Personal</option><option>K. Others</option></select> */}
   <button className="waves-effect waves-dark btn" onClick={this.saveParty}>Save</button>
   <br/><br/><br/><br/>
 
 
+
+  <h2 className='headings'>Create Charte of Accounts</h2>
+  <input type='text'  value={this.state.chartOfAccount} name='chartOfAccount' onChange={this.changeHandler} placeholder='Levels of Account' />  <br/>
+  <button className="waves-effect waves-dark btn" onClick={this.saveChartOfAccount}>Save</button>
+
+
+
+  <br/><br/><br/><br/>
   <h2 className='headings'>List of Accounts Opened</h2>
   <button className="waves-effect waves-dark btn" onClick={this.getList}>Get List</button>
 
 <div className={this.state.getListStatus === false ? 'display' : ''}>
-  <table><thead><tr><th>Account Title</th><th>Address/Contact..etc</th></tr></thead><tbody>{this.state.partyObjects.map(  (item,index)=>{return <tr key={index}><td>{(index+1) + '- ' + item.partyName}</td><td>{item.address}</td><td><a href='#' className="material-icons" style={{color:'green',fontSize:'15px'}} onClick={()=> this.editAccount(index)}>edit</a></td></tr>})    }</tbody></table> 
+  <table><thead><tr><th>Account Title</th><th>Address/Contact..etc</th><th>Category</th></tr></thead><tbody>{this.state.partyObjects.map(  (item,index)=>{return <tr key={index}><td>{(index+1) + '- ' + item.partyName}</td><td>{item.address}</td><td>{item.accountCategory}</td><td><a href='#' className="material-icons" style={{color:'green',fontSize:'15px'}} onClick={()=> this.editAccount(index)}>edit</a></td></tr>})    }</tbody></table> 
 {/* </div> */}
 </div>
 
