@@ -217,10 +217,11 @@ class LoginForm extends Component{
 
 
 <br/><br/>
+<a href='https://my-docs-67943.web.app/' target='_blank' style={{fontSize:'9px', marginLeft:'10px'}}>My Documents</a>      <a href='https://textrecordbook.web.app/' target='_blank' style={{fontSize:'9px', marginLeft:'20px'}}>Text Record</a>
 <div className='bottomLine'> 
-Prepared By: Waqas Saleem <br/>
-Easy Accounts Management System<br/>
-Contact: 0346-7605798 Email: waqas_mba86@yahoo.com
+{/* Prepared By: Waqas Saleem <br/>
+Easy Accounts Management System<br/> */}
+Developed By: Waqas Saleem Contact: +923467605798 Email: waqas.mba86@gmail.com
 </div>
 
 {/* </div> */}
