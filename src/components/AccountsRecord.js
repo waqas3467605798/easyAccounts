@@ -330,7 +330,10 @@ class DataEntry extends Component{
           renderMstStatus:false,
           noData:null,
           user:null,
-          voucherNumber:null
+          voucherNumber:null,
+          entrySaved:'',
+          color:'',
+          pageRefresh:0
           // viewVoucher:{voucherNumber:0, partyName:null, narration:null,debit:null,date:null}
           
         }
@@ -373,6 +376,24 @@ class DataEntry extends Component{
     },(err)=>{
       alert(err)
     })
+
+
+
+    setTimeout(() => {
+
+      const inteId =setInterval(()=>{
+        this.setState({pageRefresh: this.state.pageRefresh+1})
+      },1000)
+
+      setTimeout(() => {
+        clearInterval(inteId);
+      }, 30000);
+    
+    
+    
+    }, 1000);
+
+
 
 
 
@@ -454,7 +475,7 @@ firebase.database().ref('partyList'+this.state.user).child(reqPartyObj.key).set(
 
 
 
-alert('Entry successfully saved..!')
+// alert('Entry successfully saved..!')
 this.setState({debit:'',date:'',narration:'',voucherNumber:vouNum})
 firebase.database().ref('VoucherNumber'+this.state.user).child('VoucherNumber').set(vouNum)
 }else{alert('Please select the Account First')}
@@ -463,6 +484,30 @@ firebase.database().ref('VoucherNumber'+this.state.user).child('VoucherNumber').
 
 //  }else{this.setState({netDisconnect:false})}
 this.setState({viewVoucher:partyLedgerObj})
+
+
+
+this.setState({entrySaved: 'Entry Saved'})
+
+setTimeout(() => {
+  this.setState({color:'gray'})
+
+
+
+setTimeout(()=>{
+  this.setState({color:'lightgray'})
+
+setTimeout(()=>{
+  this.setState({entrySaved:'',color:''})
+},1000)
+
+},1000)
+
+
+}, 1000);
+
+
+
 
 
 
@@ -478,7 +523,7 @@ render(){
   return (
     <div>
 
-     
+    {/* {this.state.pageRefresh}  */}
   
   <div className='container'>
   <br/>
@@ -490,8 +535,8 @@ render(){
   <input type='text' value={this.state.date} onChange={this.changeHandler} name='date'  maxLength='8' placeholder='Date Formate (dd.mm.yy)' /> <br/>
   <input type='text' value={this.state.narration} name='narration' onChange={this.changeHandler} placeholder='Remarks/Narration' /> <br/>
   <input type='number' value={this.state.debit} name='debit' onChange={this.changeHandler} placeholder='Amount +Debit / -Credit' /> <br/>
-  <button className="waves-effect waves-dark btn" onClick={this.saveValue}>Save</button>
-
+  <button className="waves-effect waves-dark btn" onClick={this.saveValue}>Save</button><br/>
+  <span style={{fontSize:'20px', color:this.state.color}}><b>{this.state.entrySaved}</b></span>
 </div>
 
 
@@ -527,7 +572,8 @@ class Ledger extends Component{
           creditTotal:0,
           user:null,
           test:[],
-          accountTitle:''
+          accountTitle:'',
+          pageRefresh:0
           
           
         }
@@ -564,6 +610,24 @@ class Ledger extends Component{
     })
   
       
+
+    setTimeout(() => {
+
+      const inteId =setInterval(()=>{
+        this.setState({pageRefresh: this.state.pageRefresh+1})
+      },1000)
+
+      setTimeout(() => {
+        clearInterval(inteId);
+      }, 30000);
+    
+    
+    
+    }, 1000);
+
+
+
+
   }
 
 
@@ -879,7 +943,7 @@ class Ledger extends Component{
   
   
   <div id='up'>
-  
+  {/* {this.state.pageRefresh} */}
   <br/>
    
   <div className={this.state.accountDeleteRefresh === false ? '' : 'display'}>
@@ -979,7 +1043,8 @@ class Ledger extends Component{
         sum:[],
         accountTitle:'',
         ledgerFor30Days:-50,
-        user:null
+        user:null,
+        pageRefresh:0
       }
     }
   
@@ -1018,6 +1083,24 @@ class Ledger extends Component{
       alert(err)
     })
   
+
+
+    setTimeout(() => {
+
+      const inteId =setInterval(()=>{
+        this.setState({pageRefresh: this.state.pageRefresh+1})
+      },1000)
+
+      setTimeout(() => {
+        clearInterval(inteId);
+      }, 30000);
+    
+    
+    
+    }, 1000);
+
+
+
     
   }
 
@@ -1110,7 +1193,7 @@ class Ledger extends Component{
       render(){
         return(
           <div>
-            
+    {/* {this.state.pageRefresh}         */}
           <div className='container'>
             <br/>
     {/* <div style={{color:'green'}}><b> {this.state.userEmail}</b></div> */}

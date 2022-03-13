@@ -64,7 +64,10 @@ class LoginForm extends Component{
         super();
         this.state ={
                 forgetStatus:false,
-                forgetEmial:''
+                forgetEmial:'',
+                login:false,
+                // box1:false
+                
                 // customerPortal:false
 
 
@@ -80,6 +83,9 @@ class LoginForm extends Component{
 
 
     signin = ()=>{
+        this.setState({login:true})
+
+
      const email = document.querySelector('#email').value;
      const password = document.querySelector('#password').value;
  
@@ -97,6 +103,19 @@ class LoginForm extends Component{
          console.log('error')
      } )
  
+
+
+    // setTimeout(()=>{
+
+     
+    //  setInterval(()=>{
+    //      this.setState({box1:!this.state.box1})
+    //  },200)
+
+    // },10)
+
+
+
     } 
  
  
@@ -174,10 +193,12 @@ class LoginForm extends Component{
               {/* <label forhtml="first_name">First Name</label> */}
                </div>
  
-               <button className="waves-effect btn-large" onClick={this.signin}>Login</button>
+               <button style={{padding:'10px',fontSize:'18px',borderRadius:'7px', color:'blue', backgroundColor:this.state.login===false?'lightgreen' : 'lightyellow' }} onClick={this.signin}> {this.state.login===false? 'Login' : 'Signing In...'} </button>
+               {/* <button className="waves-effect btn-large" onClick={this.signin}>Login</button> */}
 
                 <a href='#' onClick={this.showForgetField}>Forget Password ?</a>
-
+{/* <br/><br/>
+<div style={{textAlign:'left'}}><span style={{display:'inline-block', border:'1px solid gray',width:'25px',backgroundColor:this.state.box1===true?'yellow':'white'}}>.</span><span style={{display:'inline-block',border:'1px solid gray',width:'25px',backgroundColor:this.state.box1===true?'white':'yellow'}}>.</span> </div> */}
 
 
 <br/><br/><br/><br/>
